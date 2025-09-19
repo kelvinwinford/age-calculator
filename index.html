@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Age Calculator | Calculate Your Age Online</title>
+  <meta name="description" content="Simple Age Calculator - Enter your birthdate and instantly find your exact age in years and months. 100% free, fast, and mobile friendly.">
+  <meta name="keywords" content="age calculator, simple age calculator, calculate age online, date of birth calculator, how old am I">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="favicon.svg" type="image/x-icon">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex flex-col min-h-screen">
+  <!-- Main content -->
+  <main class="flex flex-grow items-center justify-center p-4">
+    <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md text-center">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">Simple Age Calculator</h1>
+      <h2 class="text-gray-500 mb-6">Enter your birthdate to calculate your age</h2>
+      
+      <input 
+        type="date" 
+        id="birthdate" 
+        class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+      >
+      
+      <button 
+        onclick="calculateAge()" 
+        class="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition duration-200"
+      >
+        Calculate
+      </button>
+      
+      <div id="result" class="mt-6 text-xl font-semibold text-gray-700"></div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-200 text-gray-600 text-center py-4 text-sm">
+    &copy; <span id="year"></span> Kelvin Winford. All rights reserved.
+  </footer>
+
+  <script>
+    // Age calculation
+    function calculateAge() {
+      const birthdate = document.getElementById("birthdate").value;
+      if (!birthdate) return;
+
+      const today = new Date();
+      const dob = new Date(birthdate);
+
+      if (dob > today) {
+        document.getElementById("result").innerText = "Invalid date: future.";
+        return;
+      }
+
+      let years = today.getFullYear() - dob.getFullYear();
+      let months = today.getMonth() - dob.getMonth();
+      let days = today.getDate() - dob.getDate();
+
+      if (days < 0) {
+        months -= 1;
+        days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+      }
+      if (months < 0) {
+        years -= 1;
+        months += 12;
+      }
+
+      let output = "";
+      if (years > 0) output += years + (years > 1 ? " years " : " year ");
+      if (months > 0) output += months + (months > 1 ? " months" : " month");
+      if (!output) output = "Less than 1 month old";
+
+      document.getElementById("result").innerText = "Age: " + output.trim();
+    }
+
+    // Auto-update year in footer
+    document.getElementById("year").innerText = new Date().getFullYear();
+  </script>
+</body>
+</html>
